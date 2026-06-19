@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CarbonPilot</title>
+<meta name="description" content="CarbonPilot — Track, reduce and understand your personal carbon footprint.">
+<title>CarbonPilot — Personal Carbon Tracker</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -74,18 +75,9 @@
 </aside>
 
 <!-- Topbar -->
-<header class="topbar" role="banner">
+<header class="topbar">
   <div class="brand">
-    <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1C1C1E"/><stop offset="100%" style="stop-color:#3A3A3C"/></linearGradient>
-        <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#E85D4E"/><stop offset="100%" style="stop-color:#FF7B6B"/></linearGradient>
-      </defs>
-      <rect width="100" height="100" rx="24" fill="url(#lg)"/>
-      <path d="M50 82c-14 0-23-12-23-26 0-10 4-18 10-24 6-6 10-14 10-22 0 8 4 16 10 22 6 6 10 14 10 24 0 14-9 26-23 26z" fill="url(#lg2)"/>
-      <path d="M50 82c-9 0-15-6-15-14 0-5 2-9 5-12 3-3 5-7 5-11 0 4 2 8 5 11 3 3 5 7 5 12 0 8-6 14-15 14z" fill="#fff" opacity="0.2"/>
-      <circle cx="50" cy="30" r="4" fill="#fff" opacity="0.5"/>
-    </svg>
+    <img src="logo.svg" alt="CarbonPilot Logo" class="brand-logo">
     CarbonPilot
   </div>
   <nav class="topbar-nav" aria-label="Main navigation">
@@ -108,25 +100,186 @@
 <!-- Main Content -->
 <main class="main">
 
-<!-- Assess Page -->
+<!-- Assess Page — 5-step wizard -->
 <section id="page-assess" class="page" aria-label="Assessment">
   <div class="hero-gradient">
     <div class="page-hero reveal">
       <h1 class="page-title">Carbon Assessment</h1>
-      <p class="page-subtitle">A quick 2-minute survey to understand your environmental impact across five key areas of daily life.</p>
+      <p class="page-subtitle">Answer 5 quick sections. Your answers shape every graph, score and recommendation.</p>
     </div>
   </div>
-  <div class="stepper reveal reveal-d1">
-    <div class="stepper-step done">Transport</div><div class="stepper-step done">Diet</div><div class="stepper-step current">Energy</div><div class="stepper-step">Shopping</div><div class="stepper-step">Travel</div>
+  <div class="stepper reveal reveal-d1" id="assess-stepper">
+    <div class="stepper-step" data-step="1">Transport</div>
+    <div class="stepper-step" data-step="2">Diet</div>
+    <div class="stepper-step" data-step="3">Energy</div>
+    <div class="stepper-step" data-step="4">Shopping</div>
+    <div class="stepper-step" data-step="5">Travel</div>
   </div>
   <div class="section" style="padding-top:0">
-    <div class="card" style="max-width:640px;margin:0 auto">
-      <div class="card-header"><div class="card-title"><svg><use href="#i-flame"/></svg> Home Energy</div></div>
-      <div class="form-group"><label class="form-label">Household size</label><select id="assess-household" class="form-select"><option value="1">1 person</option><option value="2" selected>2 people</option><option value="3">3–4 people</option><option value="5">5+ people</option></select></div>
-      <div class="form-group"><label class="form-label">Monthly electricity bill</label><select id="assess-electricity" class="form-select"><option value="20">Under £30</option><option value="50" selected>£30–£80</option><option value="115">£80–£150</option><option value="180">Over £150</option></select></div>
-      <div class="form-group"><label class="form-label">Heating type</label><div id="assess-heating" class="chip-group"><button class="chip active" data-val="gas" onclick="pickChip(this)"><svg><use href="#i-flame"/></svg> Gas boiler</button><button class="chip" data-val="heatpump" onclick="pickChip(this)"><svg><use href="#i-bolt"/></svg> Heat pump</button><button class="chip" data-val="solar" onclick="pickChip(this)"><svg><use href="#i-sun"/></svg> Solar</button><button class="chip" data-val="oil" onclick="pickChip(this)">Oil / other</button></div></div>
-      <div class="flex gap-3 mt-6"><button class="btn btn-secondary" onclick="go('dash')">Back</button><button class="btn btn-primary" onclick="saveAssessment()">Continue</button><button class="btn btn-ghost" style="margin-left:auto" onclick="go('dash')">Skip all</button></div>
+
+    <!-- Step 1: Transport -->
+    <div class="assess-step" id="assess-step-1">
+      <div class="card" style="max-width:640px;margin:0 auto">
+        <div class="card-header"><div class="card-title"><svg><use href="#i-bus"/></svg> Transport</div></div>
+        <div class="form-group"><label class="form-label">How many days a week do you drive a car?</label>
+          <div class="chip-group" id="car-days-group">
+            <button class="chip" data-val="0" onclick="pickChip(this)">0</button>
+            <button class="chip" data-val="1" onclick="pickChip(this)">1</button>
+            <button class="chip" data-val="2" onclick="pickChip(this)">2</button>
+            <button class="chip" data-val="3" onclick="pickChip(this)">3</button>
+            <button class="chip active" data-val="5" onclick="pickChip(this)">4–5</button>
+            <button class="chip" data-val="7" onclick="pickChip(this)">6–7</button>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Car type (if any)</label>
+          <div class="chip-group" id="car-type-group">
+            <button class="chip active" data-val="petrol" onclick="pickChip(this)">Petrol</button>
+            <button class="chip" data-val="diesel" onclick="pickChip(this)">Diesel</button>
+            <button class="chip" data-val="electric" onclick="pickChip(this)">Electric</button>
+            <button class="chip" data-val="none" onclick="pickChip(this)">No car</button>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Days per week using public transport</label>
+          <div class="chip-group" id="bus-days-group">
+            <button class="chip active" data-val="0" onclick="pickChip(this)">0</button>
+            <button class="chip" data-val="1" onclick="pickChip(this)">1</button>
+            <button class="chip" data-val="2" onclick="pickChip(this)">2</button>
+            <button class="chip" data-val="3" onclick="pickChip(this)">3</button>
+            <button class="chip" data-val="5" onclick="pickChip(this)">4–5</button>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button class="btn btn-ghost" onclick="go('dash')">Skip all</button>
+          <button class="btn btn-primary" style="margin-left:auto" onclick="assessNext(1)">Next <svg width="16" height="16"><use href="#i-arrow-down"/></svg></button>
+        </div>
+      </div>
     </div>
+
+    <!-- Step 2: Diet -->
+    <div class="assess-step" id="assess-step-2" style="display:none">
+      <div class="card" style="max-width:640px;margin:0 auto">
+        <div class="card-header"><div class="card-title"><svg><use href="#i-salad"/></svg> Diet</div></div>
+        <div class="form-group"><label class="form-label">Which best describes your diet?</label>
+          <div class="chip-group" id="diet-group">
+            <button class="chip" data-val="heavy_meat" onclick="pickChip(this)">Heavy meat</button>
+            <button class="chip" data-val="omnivore" onclick="pickChip(this)">Omnivore</button>
+            <button class="chip active" data-val="flexitarian" onclick="pickChip(this)">Flexitarian</button>
+            <button class="chip" data-val="vegetarian" onclick="pickChip(this)">Vegetarian</button>
+            <button class="chip" data-val="vegan" onclick="pickChip(this)">Vegan</button>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Meat-free days per week</label>
+          <div class="chip-group" id="meatfree-days-group">
+            <button class="chip" data-val="0" onclick="pickChip(this)">0</button>
+            <button class="chip" data-val="1" onclick="pickChip(this)">1</button>
+            <button class="chip active" data-val="2" onclick="pickChip(this)">2</button>
+            <button class="chip" data-val="3" onclick="pickChip(this)">3</button>
+            <button class="chip" data-val="5" onclick="pickChip(this)">4–5</button>
+            <button class="chip" data-val="7" onclick="pickChip(this)">Every day</button>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">How much food do you waste?</label>
+          <div class="chip-group" id="food-waste-group">
+            <button class="chip" data-val="none" onclick="pickChip(this)">Very little</button>
+            <button class="chip active" data-val="some" onclick="pickChip(this)">Some</button>
+            <button class="chip" data-val="lots" onclick="pickChip(this)">A lot</button>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button class="btn btn-secondary" onclick="assessBack(2)">Back</button>
+          <button class="btn btn-primary" style="margin-left:auto" onclick="assessNext(2)">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Energy -->
+    <div class="assess-step" id="assess-step-3" style="display:none">
+      <div class="card" style="max-width:640px;margin:0 auto">
+        <div class="card-header"><div class="card-title"><svg><use href="#i-flame"/></svg> Home Energy</div></div>
+        <div class="form-group"><label class="form-label">Household size</label>
+          <select id="assess-household" class="form-select">
+            <option value="1">1 person</option><option value="2" selected>2 people</option>
+            <option value="3">3–4 people</option><option value="5">5+ people</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Monthly electricity bill</label>
+          <select id="assess-electricity" class="form-select">
+            <option value="20">Under £30</option><option value="50" selected>£30–£80</option>
+            <option value="115">£80–£150</option><option value="180">Over £150</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Heating type</label>
+          <div class="chip-group" id="assess-heating">
+            <button class="chip active" data-val="gas" onclick="pickChip(this)"><svg><use href="#i-flame"/></svg> Gas boiler</button>
+            <button class="chip" data-val="heatpump" onclick="pickChip(this)"><svg><use href="#i-bolt"/></svg> Heat pump</button>
+            <button class="chip" data-val="solar" onclick="pickChip(this)"><svg><use href="#i-sun"/></svg> Solar</button>
+            <button class="chip" data-val="oil" onclick="pickChip(this)">Oil / other</button>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button class="btn btn-secondary" onclick="assessBack(3)">Back</button>
+          <button class="btn btn-primary" style="margin-left:auto" onclick="assessNext(3)">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Shopping -->
+    <div class="assess-step" id="assess-step-4" style="display:none">
+      <div class="card" style="max-width:640px;margin:0 auto">
+        <div class="card-header"><div class="card-title"><svg><use href="#i-shirt"/></svg> Shopping</div></div>
+        <div class="form-group"><label class="form-label">New clothing items bought per month</label>
+          <div class="chip-group" id="clothing-group">
+            <button class="chip" data-val="0" onclick="pickChip(this)">0</button>
+            <button class="chip active" data-val="1" onclick="pickChip(this)">1</button>
+            <button class="chip" data-val="2" onclick="pickChip(this)">2</button>
+            <button class="chip" data-val="4" onclick="pickChip(this)">3–4</button>
+            <button class="chip" data-val="6" onclick="pickChip(this)">5+</button>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Do you buy second-hand?</label>
+          <div class="chip-group" id="secondhand-group">
+            <button class="chip" data-val="yes" onclick="pickChip(this)">Often</button>
+            <button class="chip active" data-val="sometimes" onclick="pickChip(this)">Sometimes</button>
+            <button class="chip" data-val="no" onclick="pickChip(this)">Rarely</button>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button class="btn btn-secondary" onclick="assessBack(4)">Back</button>
+          <button class="btn btn-primary" style="margin-left:auto" onclick="assessNext(4)">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5: Travel -->
+    <div class="assess-step" id="assess-step-5" style="display:none">
+      <div class="card" style="max-width:640px;margin:0 auto">
+        <div class="card-header"><div class="card-title"><svg><use href="#i-plane"/></svg> Travel</div></div>
+        <div class="form-group"><label class="form-label">Short-haul flights per year (&lt; 4 hrs)</label>
+          <div class="chip-group" id="flights-short-group">
+            <button class="chip" data-val="0" onclick="pickChip(this)">0</button>
+            <button class="chip" data-val="1" onclick="pickChip(this)">1</button>
+            <button class="chip active" data-val="2" onclick="pickChip(this)">2</button>
+            <button class="chip" data-val="4" onclick="pickChip(this)">3–4</button>
+            <button class="chip" data-val="6" onclick="pickChip(this)">5+</button>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Long-haul flights per year (&gt; 4 hrs)</label>
+          <div class="chip-group" id="flights-long-group">
+            <button class="chip" data-val="0" onclick="pickChip(this)">0</button>
+            <button class="chip active" data-val="1" onclick="pickChip(this)">1</button>
+            <button class="chip" data-val="2" onclick="pickChip(this)">2</button>
+            <button class="chip" data-val="3" onclick="pickChip(this)">3+</button>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button class="btn btn-secondary" onclick="assessBack(5)">Back</button>
+          <button class="btn btn-primary btn-lg" onclick="saveAssessment()" style="margin-left:auto">
+            <svg width="18" height="18"><use href="#i-check"/></svg> Complete Assessment
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -244,21 +397,19 @@
   <div class="hero-gradient"><div class="page-hero reveal"><h1 class="page-title">Progress</h1><p class="page-subtitle">3 months tracked. Your streak is active. Keep going.</p></div></div>
   <div class="section" style="padding-top:0">
     <div class="grid grid-4 reveal">
-      <div class="stat-card"><div class="stat-label">CO₂ Saved Total</div><div class="stat-value positive">164 kg</div><div class="stat-delta neutral">this year</div></div>
+      <div class="stat-card"><div class="stat-label">CO₂ Saved Total</div><div class="stat-value positive" id="track-co2-saved">164 kg</div><div class="stat-delta neutral">this year</div></div>
       <div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value">9 days</div><div class="stat-delta up">Personal best</div></div>
-      <div class="stat-card"><div class="stat-label">Actions Done</div><div class="stat-value">18 / 24</div><div class="stat-delta neutral">this month</div></div>
-      <div class="stat-card"><div class="stat-label">Goal Progress</div><div class="stat-value">75%</div><div class="stat-delta neutral">toward 450 kg</div></div>
+      <div class="stat-card"><div class="stat-label">Actions Done</div><div class="stat-value" id="track-actions-done">0 / 4</div><div class="stat-delta neutral">this month</div></div>
+      <div class="stat-card"><div class="stat-label">Goal Progress</div><div class="stat-value" id="track-goal-pct">0%</div><div class="stat-delta neutral">toward 450 kg</div></div>
     </div>
   </div>
   <div class="section" style="padding-top:0">
     <div class="grid grid-2 reveal reveal-d1">
-      <div class="card"><div class="card-header"><div class="card-title"><svg><use href="#i-target"/></svg> Monthly Goal</div></div><div class="flex justify-between" style="font-size:16px;color:var(--text-3);margin-bottom:12px"><span>517 kg now</span><span>450 kg target</span></div><div class="progress-bar" style="height:10px"><div class="progress-fill" style="width:75%"></div></div><div style="font-size:14px;color:var(--text-3);margin-top:16px">67 kg to go — on track</div><div class="sep"></div><div class="card-header" style="margin-bottom:20px"><div class="card-title"><svg><use href="#i-bar-chart"/></svg> Weekly Savings</div></div><div style="position:relative;height:140px"><canvas id="chartWeekly" aria-label="Weekly savings"></canvas></div></div>
-      <div class="card"><div class="card-header"><div class="card-title"><svg><use href="#i-list-check"/></svg> Active Actions</div></div>
-        <div class="action-item"><div class="action-check" data-id="bus" onclick="toggleAction(this, 'bus')"></div><div class="action-content"><div class="action-title">Bus Tue & Thu</div><div class="action-meta">9-day streak</div></div><span class="action-badge">−132 kg/yr</span></div>
-        <div class="action-item"><div class="action-check" data-id="meatfree" onclick="toggleAction(this, 'meatfree')"></div><div class="action-content"><div class="action-title">Meat-free Mon & Wed</div><div class="action-meta">−88 kg saved</div></div><span class="action-badge">−264 kg/yr</span></div>
-        <div class="action-item"><div class="action-check" data-id="standby" onclick="toggleAction(this, 'standby')"></div><div class="action-content"><div class="action-title">Standby devices off</div><div class="action-meta">Not started</div></div><span class="action-badge">−52 kg/yr</span></div>
-        <div class="action-item"><div class="action-check" data-id="showers" onclick="toggleAction(this, 'showers')"></div><div class="action-content"><div class="action-title">2-min shorter showers</div><div class="action-meta">Not started</div></div><span class="action-badge">−36 kg/yr</span></div>
-        <button class="btn btn-secondary btn-block mt-5" onclick="go('nba')"><svg width="16" height="16"><use href="#i-plus"/></svg> Add Actions</button>
+      <div class="card"><div class="card-header"><div class="card-title"><svg><use href="#i-target"/></svg> Monthly Goal</div></div><div class="flex justify-between" style="font-size:16px;color:var(--text-3);margin-bottom:12px"><span id="track-monthly-now">517 kg now</span><span>450 kg target</span></div><div class="progress-bar" style="height:10px"><div class="progress-fill" id="track-goal-fill" style="width:75%"></div></div><div style="font-size:14px;color:var(--text-3);margin-top:16px" id="track-goal-note">67 kg to go — on track</div><div class="sep"></div><div class="card-header" style="margin-bottom:20px"><div class="card-title"><svg><use href="#i-bar-chart"/></svg> Weekly Savings</div></div><div style="position:relative;height:140px"><canvas id="chartWeekly" aria-label="Weekly savings"></canvas></div></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title"><svg><use href="#i-list-check"/></svg> Active Actions</div></div>
+        <div id="active-actions-list"></div>
+        <button class="btn btn-secondary btn-block mt-5" onclick="openAddActionModal()"><svg width="16" height="16"><use href="#i-plus"/></svg> Add Actions</button>
       </div>
     </div>
   </div>
@@ -272,11 +423,21 @@
     </div>
   </div>
   <div class="section" style="padding-top:32px">
-    <div class="tree-banner reveal"><div style="font-size:18px;color:var(--accent);font-weight:700;margin-bottom:16px">Your 164 kg saved equals</div><div style="font-size:52px;font-weight:800;color:var(--accent);letter-spacing:-2px">7.5 trees</div><div style="font-size:16px;color:var(--text-3)">planted and growing for one year</div></div>
+    <div class="tree-banner reveal" id="track-tree-banner"><div style="font-size:18px;color:var(--accent);font-weight:700;margin-bottom:16px">Your CO₂ saved equals</div><div style="font-size:52px;font-weight:800;color:var(--accent);letter-spacing:-2px" id="track-trees-num">0</div><div style="font-size:16px;color:var(--text-3)">trees planted and growing for one year</div></div>
   </div>
 </section>
 
 </main>
+</div>
+
+<!-- Add Action Modal -->
+<div id="modal-add-action" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:20px;transition:all 0.3s ease;">
+  <div style="background:var(--surface-elevated);border-radius:28px;padding:32px;max-width:480px;width:100%;box-shadow:var(--shadow-xl);border:1px solid var(--border)">
+    <div style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px">Add an Action</div>
+    <div style="font-size:15px;color:var(--text-3);margin-bottom:24px">Select actions to track. Each one reduces your footprint.</div>
+    <div id="modal-action-list" style="display:flex;flex-direction:column;gap:10px;max-height:60vh;overflow-y:auto;padding-right:4px;"></div>
+    <button class="btn btn-secondary btn-block" style="margin-top:24px" onclick="closeAddActionModal()">Done</button>
+  </div>
 </div>
 
 <!-- Mobile Navigation -->
@@ -290,6 +451,7 @@
   </div>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
