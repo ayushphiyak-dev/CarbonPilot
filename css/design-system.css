@@ -1,0 +1,152 @@
+/* ============================================================
+   CARBONPILOT — Design System
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Brand Colors */
+  --cp-primary:        #1a5f4a;
+  --cp-primary-dark:   #134a39;
+  --cp-primary-light:  #e8f5f0;
+  --cp-accent:         #f4a261;
+  --cp-accent-light:   #fef3e8;
+
+  /* Neutrals */
+  --cp-bg:             #faf9f7;
+  --cp-surface:        #ffffff;
+  --cp-surface-elev:   #ffffff;
+  --cp-border:         #e8e6e1;
+  --cp-border-light:   #f0eeea;
+
+  /* Text */
+  --cp-text:           #1a1a1a;
+  --cp-text-secondary: #6b6b6b;
+  --cp-text-muted:     #9a9894;
+
+  /* Semantic */
+  --cp-success:        #2a9d5a;
+  --cp-success-bg:     #e8f5ec;
+  --cp-warning:        #d4a017;
+  --cp-warning-bg:     #fef8e8;
+  --cp-danger:         #c0392b;
+  --cp-danger-bg:      #fdecea;
+  --cp-info:           #2874a6;
+  --cp-info-bg:        #eaf2f8;
+
+  /* Spacing Scale (8px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', Monaco, monospace;
+
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   16px;
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+
+  /* Radius */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  20px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.05);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.06);
+  --shadow-xl:  0 16px 48px rgba(0,0,0,0.08);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --topbar-height: 64px;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cp-bg:             #0f1419;
+    --cp-surface:        #1a1f2e;
+    --cp-surface-elev:   #232838;
+    --cp-border:         #2a3040;
+    --cp-border-light:   #232838;
+    --cp-text:           #f0f0f0;
+    --cp-text-secondary: #a0a8b8;
+    --cp-text-muted:     #6b7280;
+    --cp-primary-light:  #1a3d30;
+    --cp-accent-light:   #3d3020;
+    --cp-success-bg:     #1a3d28;
+    --cp-warning-bg:     #3d3020;
+    --cp-danger-bg:      #3d1a1a;
+    --cp-info-bg:        #1a2d3d;
+    --shadow-sm:  0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md:  0 4px 12px rgba(0,0,0,0.3);
+    --shadow-lg:  0 8px 24px rgba(0,0,0,0.4);
+  }
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--cp-text);
+  background: var(--cp-bg);
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+img { max-width: 100%; display: block; }
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--cp-primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--cp-border); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--cp-text-muted); }
+
+/* Selection */
+::selection {
+  background: var(--cp-primary-light);
+  color: var(--cp-primary-dark);
+}
