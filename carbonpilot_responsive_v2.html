@@ -1,0 +1,670 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#166534;--green-mid:#16a34a;--green-light:#dcfce7;--green-pale:#f0fdf4;
+  --slate:#1e293b;--slate-mid:#475569;--slate-light:#94a3b8;
+  --surface:var(--color-background-primary);
+  --bg:var(--color-background-tertiary);
+  --border:var(--color-border-tertiary);
+  --muted:var(--color-text-secondary);
+  --radius-sm:var(--border-radius-md);
+  --radius:var(--border-radius-lg);
+  --radius-xl:var(--border-radius-xl)
+}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--color-text-primary);font-size:14px;line-height:1.5}
+
+/* NAV */
+.topbar{background:var(--surface);border-bottom:0.5px solid var(--border);height:54px;display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:50}
+.topbar-logo{font-size:15px;font-weight:500;color:var(--green);display:flex;align-items:center;gap:6px;margin-right:auto}
+.topbar-logo i{font-size:18px}
+.topbar-nav{display:flex;gap:2px}
+.tn{border:none;background:none;padding:7px 11px;border-radius:var(--radius-sm);font-size:12px;cursor:pointer;color:var(--muted);transition:.12s;white-space:nowrap}
+.tn:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.tn.active{background:var(--green-light);color:var(--green);font-weight:500}
+.tn i{font-size:14px;vertical-align:-1px;margin-right:4px}
+.mob-menu-btn{display:none;border:none;background:none;cursor:pointer;padding:8px;color:var(--color-text-primary)}
+
+/* BOTTOM NAV (mobile only) */
+.bottom-nav{display:none;background:var(--surface);border-top:0.5px solid var(--border);padding:8px 4px 12px}
+.bnav-inner{display:flex;justify-content:space-around}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm);color:var(--muted);font-size:10px;transition:.12s;min-width:52px}
+.bn i{font-size:20px}
+.bn.active{color:var(--green)}
+.bn.active i{color:var(--green)}
+
+/* LAYOUT SHELL */
+.shell{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 54px)}
+.sidebar{background:var(--surface);border-right:0.5px solid var(--border);padding:16px 10px;display:flex;flex-direction:column;gap:2px}
+.sn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;border:none;background:none;color:var(--muted);transition:.12s;text-align:left;width:100%}
+.sn i{font-size:16px;flex-shrink:0}
+.sn:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.sn.active{background:var(--green-light);color:var(--green);font-weight:500}
+.sidebar-section{font-size:10px;letter-spacing:.6px;color:var(--muted);padding:14px 12px 6px;font-weight:500}
+
+.main{overflow:hidden}
+.page{display:none;padding:20px}
+.page.active{display:block}
+
+/* CARDS */
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px}
+.card-flush{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius)}
+.mc{background:var(--color-background-secondary);border-radius:var(--radius-sm);padding:14px}
+.mc .lbl{font-size:11px;color:var(--muted);margin-bottom:4px}
+.mc .val{font-size:20px;font-weight:500}
+.mc .sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.ga{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+
+/* TYPE */
+.pg-title{font-size:18px;font-weight:500;margin-bottom:2px}
+.pg-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.sec-label{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sec-label i{font-size:14px}
+
+/* UTIL */
+.row{display:flex;align-items:center}
+.between{justify-content:space-between}
+.gap6{gap:6px}
+.gap10{gap:10px}
+.gap14{gap:14px}
+.mt8{margin-top:8px}
+.mt12{margin-top:12px}
+.mt16{margin-top:16px}
+.mt20{margin-top:20px}
+.mb10{margin-bottom:10px}
+.mb14{margin-bottom:14px}
+.mb18{margin-bottom:18px}
+.fw5{font-weight:500}
+.f11{font-size:11px}
+.f12{font-size:12px}
+.f13{font-size:13px}
+.f15{font-size:15px}
+.muted{color:var(--muted)}
+.green{color:var(--green)}
+.sep{height:0.5px;background:var(--border);margin:12px 0}
+
+/* PILLS */
+.pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500}
+.pill-g{background:var(--green-light);color:#14532d}
+.pill-a{background:#fef3c7;color:#78350f}
+.pill-r{background:#fee2e2;color:#7f1d1d}
+.pill-b{background:#dbeafe;color:#1e3a8a}
+.pill-n{background:var(--color-background-secondary);color:var(--muted)}
+
+/* PROGRESS */
+.pbar{height:6px;border-radius:3px;background:var(--color-background-secondary);overflow:hidden}
+.pfill{height:100%;border-radius:3px}
+
+/* BUTTONS */
+.btn{border:0.5px solid var(--border);background:none;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;color:var(--color-text-primary);transition:.12s;font-weight:500}
+.btn:hover{background:var(--color-background-secondary)}
+.btn-primary{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-primary:hover{background:#15803d}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-block{width:100%;text-align:center}
+
+/* ACTION ITEM */
+.action-row{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:0.5px solid var(--border)}
+.action-row:last-child{border-bottom:none}
+.chk{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-top:1px;transition:.12s}
+.chk.done{background:var(--green-mid);border-color:var(--green-mid);color:#fff}
+.action-save{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--green-light);color:#14532d;font-weight:500;flex-shrink:0;margin-left:auto;margin-top:1px}
+
+/* ONBOARDING STEPS */
+.step-nav{display:flex;gap:0;border-bottom:0.5px solid var(--border);margin-bottom:20px}
+.stp{flex:1;text-align:center;padding:10px 4px;font-size:11px;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;transition:.12s}
+.stp.done{color:var(--green-mid);border-bottom-color:var(--green-mid)}
+.stp.cur{color:var(--green);border-bottom-color:var(--green);font-weight:500}
+.opt-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.chip{padding:7px 12px;border:0.5px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;transition:.12s;background:var(--surface);color:var(--color-text-primary)}
+.chip:hover{border-color:var(--green);color:var(--green)}
+.chip.sel{border-color:var(--green);background:var(--green-light);color:#14532d;font-weight:500}
+.form-lbl{font-size:12px;font-weight:500;display:block;margin-bottom:5px}
+.form-sel{width:100%;padding:9px 11px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--surface);color:var(--color-text-primary);font-size:13px;margin-bottom:14px}
+
+/* SIM SLIDER */
+.slrow{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.sl-lbl{font-size:12px;color:var(--muted);flex:1}
+.sl-val{font-size:12px;font-weight:500;min-width:44px;text-align:right;color:var(--color-text-primary)}
+
+/* CHAT */
+.chat-box{background:var(--color-background-secondary);border-radius:var(--radius);padding:14px;min-height:180px;margin-bottom:10px}
+.bubble{padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.6;margin-bottom:8px;max-width:92%}
+.b-ai{background:var(--surface);border:0.5px solid var(--border)}
+.b-user{background:var(--green);color:#fff;margin-left:auto;border-radius:10px 10px 3px 10px}
+.chat-row{display:flex;gap:8px}
+.chat-inp{flex:1;padding:9px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--surface);color:var(--color-text-primary);font-size:13px}
+.quick-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.qc{font-size:11px;padding:5px 10px;border-radius:20px;border:0.5px solid var(--border);background:var(--surface);cursor:pointer;color:var(--muted);transition:.12s}
+.qc:hover{border-color:var(--green);color:var(--green)}
+
+/* SCORE RING */
+.ring-wrap{display:flex;flex-direction:column;align-items:center;padding:12px 0}
+.ring-num{position:absolute;font-size:26px;font-weight:500;color:var(--green)}
+.ring-sub{font-size:10px;color:var(--muted);position:absolute;top:calc(50% + 20px)}
+
+/* NBA highlight card */
+.nba{border:1.5px solid var(--green);border-radius:var(--radius);padding:18px;background:var(--surface);position:relative}
+.nba-tag{position:absolute;top:14px;right:14px;background:var(--green);color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.nba-icon{width:44px;height:44px;background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--green);margin-bottom:12px;flex-shrink:0}
+.nba-kg{font-size:24px;font-weight:500;color:var(--green);margin:8px 0 4px}
+
+/* RESPONSIVE BREAKPOINTS */
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .topbar-nav{display:none}
+  .mob-menu-btn{display:block}
+  .bottom-nav{display:block}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .page{padding:16px 14px}
+}
+@media(min-width:901px) and (max-width:1100px){
+  .shell{grid-template-columns:180px 1fr}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .pg-title{font-size:16px}
+  .topbar{padding:0 14px}
+  .page{padding:14px 12px}
+}
+</style>
+
+<h2 class="sr-only">CarbonPilot — responsive carbon footprint app with assess, dashboard, next action, simulator, coach, and progress screens.</h2>
+
+<div class="topbar">
+  <div class="topbar-logo"><i class="ti ti-leaf" aria-hidden="true"></i> CarbonPilot</div>
+  <nav class="topbar-nav" aria-label="Main navigation">
+    <button class="tn" onclick="nav('assess')"><i class="ti ti-clipboard-list" aria-hidden="true"></i>Assess</button>
+    <button class="tn active" onclick="nav('dash')"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</button>
+    <button class="tn" onclick="nav('nba')"><i class="ti ti-bolt" aria-hidden="true"></i>Next action</button>
+    <button class="tn" onclick="nav('sim')"><i class="ti ti-adjustments" aria-hidden="true"></i>Simulator</button>
+    <button class="tn" onclick="nav('coach')"><i class="ti ti-message-circle" aria-hidden="true"></i>Coach</button>
+    <button class="tn" onclick="nav('track')"><i class="ti ti-chart-line" aria-hidden="true"></i>Progress</button>
+  </nav>
+  <button class="mob-menu-btn" aria-label="Menu" onclick="nav('dash')"><i class="ti ti-menu-2" style="font-size:20px" aria-hidden="true"></i></button>
+</div>
+
+<div class="shell">
+  <aside class="sidebar" aria-label="Sidebar navigation">
+    <div class="sidebar-section">Navigate</div>
+    <button class="sn" onclick="nav('assess')"><i class="ti ti-clipboard-list" aria-hidden="true"></i>Assess</button>
+    <button class="sn active" onclick="nav('dash')"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</button>
+    <button class="sn" onclick="nav('nba')"><i class="ti ti-bolt" aria-hidden="true"></i>Next action</button>
+    <button class="sn" onclick="nav('sim')"><i class="ti ti-adjustments" aria-hidden="true"></i>Simulator</button>
+    <button class="sn" onclick="nav('coach')"><i class="ti ti-message-circle" aria-hidden="true"></i>AI coach</button>
+    <button class="sn" onclick="nav('track')"><i class="ti ti-chart-line" aria-hidden="true"></i>Progress</button>
+    <div class="sidebar-section" style="margin-top:8px">Profile</div>
+    <button class="sn" onclick="nav('assess')"><i class="ti ti-user" aria-hidden="true"></i>My profile</button>
+    <button class="sn" onclick="nav('track')"><i class="ti ti-trophy" aria-hidden="true"></i>Achievements</button>
+    <div style="margin-top:auto;padding:12px;border-top:0.5px solid var(--border);margin-top:24px">
+      <div class="f11 muted mb10">Your eco score</div>
+      <div class="row gap10">
+        <div style="position:relative;flex-shrink:0">
+          <svg width="44" height="44" role="img" aria-label="Eco score 68"><circle cx="22" cy="22" r="18" fill="none" stroke="#dcfce7" stroke-width="5"/><circle cx="22" cy="22" r="18" fill="none" stroke="#166534" stroke-width="5" stroke-dasharray="113" stroke-dashoffset="36" stroke-linecap="round" transform="rotate(-90 22 22)"/></svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--green)">68</div>
+        </div>
+        <div><div class="fw5 f12">Alex M.</div><div class="f11 muted">6.2 t CO₂/yr</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ASSESS -->
+    <div id="page-assess" class="page">
+      <div class="pg-title">Carbon assessment</div>
+      <div class="pg-sub">Takes about 2 minutes</div>
+      <div class="step-nav">
+        <div class="stp done">Transport</div>
+        <div class="stp done">Diet</div>
+        <div class="stp cur">Energy</div>
+        <div class="stp">Shopping</div>
+        <div class="stp">Travel</div>
+      </div>
+      <div class="card">
+        <div class="sec-label mb10"><i class="ti ti-bolt" aria-hidden="true"></i> Home energy</div>
+        <label class="form-lbl">Household size</label>
+        <select class="form-sel"><option>1 person</option><option selected>2 people</option><option>3–4 people</option><option>5+</option></select>
+        <label class="form-lbl">Monthly electricity bill</label>
+        <select class="form-sel"><option>Under £30</option><option selected>£30–£80</option><option>£80–£150</option><option>Over £150</option></select>
+        <label class="form-lbl">Heating type</label>
+        <div class="opt-chips">
+          <div class="chip sel" onclick="pickChip(this)"><i class="ti ti-flame" aria-hidden="true"></i> Gas boiler</div>
+          <div class="chip" onclick="pickChip(this)"><i class="ti ti-bolt" aria-hidden="true"></i> Heat pump</div>
+          <div class="chip" onclick="pickChip(this)"><i class="ti ti-sun" aria-hidden="true"></i> Solar</div>
+          <div class="chip" onclick="pickChip(this)">Oil / other</div>
+        </div>
+        <div class="row gap10 mt16">
+          <button class="btn btn-sm" onclick="nav('dash')">Back</button>
+          <button class="btn btn-primary btn-sm" onclick="nav('dash')">Continue</button>
+          <button class="btn btn-sm" style="margin-left:auto;color:var(--muted);border-color:transparent" onclick="nav('dash')">Skip all</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="page-dash" class="page active">
+      <div class="row between mb18" style="flex-wrap:wrap;gap:10px">
+        <div>
+          <div class="pg-title">Dashboard</div>
+          <div class="pg-sub" style="margin-bottom:0">June 2026 · Household of 2</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="nav('nba')"><i class="ti ti-bolt" aria-hidden="true"></i> Top action</button>
+      </div>
+
+      <div class="ga mb14">
+        <div class="mc"><div class="lbl">Eco score</div><div class="val green">68 <span style="font-size:13px;font-weight:400">/ 100</span></div><div class="sub">Top 32% of users</div></div>
+        <div class="mc"><div class="lbl">Annual footprint</div><div class="val">6.2 t</div><div class="sub" style="color:#16a34a">↓ 8% from last year</div></div>
+        <div class="mc"><div class="lbl">This month</div><div class="val">517 kg</div><div class="sub">target: 450 kg</div></div>
+        <div class="mc"><div class="lbl">Biggest source</div><div class="val f15">Transport</div><div class="sub" style="color:#dc2626">41% of total</div></div>
+      </div>
+
+      <div class="g2 mb14">
+        <div class="card">
+          <div class="sec-label"><i class="ti ti-chart-donut-2" aria-hidden="true"></i> Breakdown</div>
+          <div style="position:relative;height:180px"><canvas id="donut1" role="img" aria-label="Donut chart: transport 41%, food 24%, home 19%, shopping 10%, waste 6%">Transport 41%, Food 24%, Home 19%, Shopping 10%, Waste 6%.</canvas></div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+            <span class="f11 muted row gap6"><span style="width:8px;height:8px;border-radius:2px;background:#166534;display:inline-block"></span>Transport 41%</span>
+            <span class="f11 muted row gap6"><span style="width:8px;height:8px;border-radius:2px;background:#16a34a;display:inline-block"></span>Food 24%</span>
+            <span class="f11 muted row gap6"><span style="width:8px;height:8px;border-radius:2px;background:#2563eb;display:inline-block"></span>Home 19%</span>
+            <span class="f11 muted row gap6"><span style="width:8px;height:8px;border-radius:2px;background:#d97706;display:inline-block"></span>Shopping 10%</span>
+            <span class="f11 muted row gap6"><span style="width:8px;height:8px;border-radius:2px;background:#94a3b8;display:inline-block"></span>Waste 6%</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-label"><i class="ti ti-trending-down" aria-hidden="true"></i> Monthly trend</div>
+          <div style="position:relative;height:180px"><canvas id="trend1" role="img" aria-label="Line chart showing monthly CO2 declining from 580kg to 517kg">580, 560, 545, 530, 517 kg Jan–Jun.</canvas></div>
+        </div>
+      </div>
+
+      <div class="card mb14">
+        <div class="sec-label"><i class="ti ti-chart-bar" aria-hidden="true"></i> Category detail</div>
+        <div id="catBarsEl"></div>
+      </div>
+
+      <div class="card" style="border-left:2px solid var(--green);border-radius:0 var(--radius) var(--radius) 0">
+        <div class="row gap10">
+          <div style="width:36px;height:36px;background:var(--green-light);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-bolt" style="font-size:18px;color:var(--green)" aria-hidden="true"></i></div>
+          <div style="flex:1"><div class="fw5 f13">Your #1 recommended action</div><div class="f12 muted mt8">Take the bus 3 days a week — saves 396 kg CO₂/year</div></div>
+          <button class="btn btn-sm btn-primary" onclick="nav('nba')">View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXT BEST ACTION -->
+    <div id="page-nba" class="page">
+      <div class="pg-title">Next best action</div>
+      <div class="pg-sub">Your single highest-impact, most achievable step</div>
+
+      <div class="nba mb16">
+        <div class="nba-tag">AI pick</div>
+        <div class="nba-icon"><i class="ti ti-bus" aria-hidden="true"></i></div>
+        <div class="fw5 f15">Take public transport 3 days a week</div>
+        <div class="nba-kg">Save 396 kg CO₂/year</div>
+        <div class="f12 muted mb14">That's 22% of your transport emissions — your biggest lever.</div>
+        <div class="ga mb14">
+          <div class="mc"><div class="lbl">Difficulty</div><div class="fw5 f13" style="color:#d97706;margin-top:3px">Low</div></div>
+          <div class="mc"><div class="lbl">Impact</div><div class="fw5 f13 green" style="margin-top:3px">High</div></div>
+          <div class="mc"><div class="lbl">Starts</div><div class="fw5 f13" style="margin-top:3px">Day one</div></div>
+        </div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--radius-sm);padding:12px;margin-bottom:14px">
+          <div class="fw5 f12 mb10">Why this action?</div>
+          <div class="f12 muted" style="line-height:1.7">Your car produces 1.8 kg CO₂ per commute. The tube emits 0.05 kg — a 36× difference. Three swaps a week delivers the highest ratio of impact to effort for your profile.</div>
+        </div>
+        <div class="row gap10" style="flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" onclick="nav('track')"><i class="ti ti-check" aria-hidden="true"></i> Start this action</button>
+          <button class="btn btn-sm" onclick="nav('sim')">Simulate first</button>
+        </div>
+      </div>
+
+      <div class="sec-label mt20"><i class="ti ti-list" aria-hidden="true"></i> Other high-impact options</div>
+      <div class="g2">
+        <div class="card">
+          <div class="row gap10 mb10">
+            <div style="width:30px;height:30px;background:#dcfce7;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-salad" style="font-size:15px;color:#14532d" aria-hidden="true"></i></div>
+            <div class="fw5 f12">2 meat-free days/week</div>
+          </div>
+          <div style="font-size:17px;font-weight:500;color:#16a34a">−264 kg/yr</div>
+          <div class="pbar mt8"><div class="pfill" style="width:67%;background:#16a34a"></div></div>
+          <div class="row between mt8"><span class="pill pill-g">Low effort</span><span class="f11 muted">#2</span></div>
+        </div>
+        <div class="card">
+          <div class="row gap10 mb10">
+            <div style="width:30px;height:30px;background:#dbeafe;border-radius:7px;display:flex;align-items:center;justify-content:justify-content:center;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-bolt" style="font-size:15px;color:#1e3a8a" aria-hidden="true"></i></div>
+            <div class="fw5 f12">Switch to green energy tariff</div>
+          </div>
+          <div style="font-size:17px;font-weight:500;color:#2563eb">−210 kg/yr</div>
+          <div class="pbar mt8"><div class="pfill" style="width:53%;background:#2563eb"></div></div>
+          <div class="row between mt8"><span class="pill pill-b">One-time</span><span class="f11 muted">#3</span></div>
+        </div>
+        <div class="card">
+          <div class="row gap10 mb10">
+            <div style="width:30px;height:30px;background:#fef3c7;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-plane" style="font-size:15px;color:#78350f" aria-hidden="true"></i></div>
+            <div class="fw5 f12">Skip one short-haul flight</div>
+          </div>
+          <div style="font-size:17px;font-weight:500;color:#d97706">−400 kg</div>
+          <div class="pbar mt8"><div class="pfill" style="width:100%;background:#d97706"></div></div>
+          <div class="row between mt8"><span class="pill pill-a">Medium effort</span><span class="f11 muted">#4</span></div>
+        </div>
+        <div class="card">
+          <div class="row gap10 mb10">
+            <div style="width:30px;height:30px;background:var(--green-light);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-shirt" style="font-size:15px;color:#14532d" aria-hidden="true"></i></div>
+            <div class="fw5 f12">Halve clothing purchases</div>
+          </div>
+          <div style="font-size:17px;font-weight:500;color:var(--green)">−120 kg/yr</div>
+          <div class="pbar mt8"><div class="pfill" style="width:30%;background:var(--green)"></div></div>
+          <div class="row between mt8"><span class="pill pill-g">Low effort</span><span class="f11 muted">#5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIMULATOR -->
+    <div id="page-sim" class="page">
+      <div class="pg-title">What-if simulator</div>
+      <div class="pg-sub">Move the sliders — your footprint updates live</div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="sec-label mb14"><i class="ti ti-adjustments" aria-hidden="true"></i> Adjust habits</div>
+
+          <div class="f12 fw5 muted mb10">Transport</div>
+          <div class="slrow"><span class="sl-lbl">Bus/train days per week</span><input type="range" min="0" max="5" step="1" value="1" id="s-tr" oninput="doSim()" style="flex:1"><span class="sl-val" id="v-tr">1</span></div>
+          <div class="slrow"><span class="sl-lbl">Car trips per week</span><input type="range" min="0" max="7" step="1" value="5" id="s-ca" oninput="doSim()" style="flex:1"><span class="sl-val" id="v-ca">5</span></div>
+
+          <div class="sep"></div>
+          <div class="f12 fw5 muted mb10">Food</div>
+          <div class="slrow"><span class="sl-lbl">Meat-free days per week</span><input type="range" min="0" max="7" step="1" value="1" id="s-mf" oninput="doSim()" style="flex:1"><span class="sl-val" id="v-mf">1</span></div>
+          <div class="slrow"><span class="sl-lbl">Food waste reduced by (%)</span><input type="range" min="0" max="100" step="5" value="10" id="s-fw" oninput="doSim()" style="flex:1"><span class="sl-val" id="v-fw">10%</span></div>
+
+          <div class="sep"></div>
+          <div class="f12 fw5 muted mb10">Home & travel</div>
+          <div class="slrow"><span class="sl-lbl">Electricity use reduced (%)</span><input type="range" min="0" max="60" step="5" value="0" id="s-el" oninput="doSim()" style="flex:1"><span class="sl-val" id="v-el">0%</span></div>
+          <div class="slrow"><span class="sl-lbl">Short-haul flights per year</span><input type="range" min="0" max="6" step="1" value="2" id="s-fl" oninput="doSim()" style="flex:1"><span class="sl-val" id="v-fl">2</span></div>
+
+          <div class="sep"></div>
+          <button class="btn btn-sm btn-block muted" onclick="resetSim()"><i class="ti ti-refresh" aria-hidden="true"></i> Reset to baseline</button>
+        </div>
+
+        <div>
+          <div class="card mb12" style="border:1.5px solid var(--green)">
+            <div class="f11 muted" style="margin-bottom:10px;letter-spacing:.3px">Projected outcome</div>
+            <div class="g2 mb12">
+              <div class="mc"><div class="lbl">New score</div><div class="val green" id="sim-sc">68</div></div>
+              <div class="mc"><div class="lbl">Annual total</div><div class="val" id="sim-tot">6.2 t</div></div>
+            </div>
+            <div style="background:var(--green-light);border-radius:var(--radius-sm);padding:13px">
+              <div class="f11" style="color:#14532d;margin-bottom:3px">Reduction vs now</div>
+              <div style="font-size:22px;font-weight:500;color:#14532d" id="sim-delta">0 kg</div>
+              <div class="f12" style="color:#166534;margin-top:3px" id="sim-pct">Move sliders to see impact</div>
+            </div>
+          </div>
+
+          <div style="background:var(--green-light);border-radius:var(--radius);padding:16px;text-align:center;margin-bottom:12px">
+            <div class="f11 muted mb10" style="color:#166534">Real-world equivalent</div>
+            <div style="font-size:28px;font-weight:500;color:#14532d" id="sim-eq">0</div>
+            <div class="f12" style="color:#166534" id="sim-eqlbl">trees planted for one year</div>
+          </div>
+
+          <div class="card">
+            <div class="sec-label mb10"><i class="ti ti-chart-donut-2" aria-hidden="true"></i> Updated mix</div>
+            <div style="position:relative;height:150px"><canvas id="simDonut" role="img" aria-label="Updated donut chart after simulator changes">Updated emission mix.</canvas></div>
+            <div id="simLeg" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:11px;color:var(--muted)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI COACH -->
+    <div id="page-coach" class="page">
+      <div class="pg-title">AI coach</div>
+      <div class="pg-sub">Knows your full profile — ask anything</div>
+
+      <div class="ga mb14">
+        <div class="mc"><div class="lbl">Profile loaded</div><div class="fw5 f12 mt8">2 people · car commuter · flexitarian</div></div>
+        <div class="mc"><div class="lbl">Footprint</div><div class="fw5 f12 green mt8">6.2 t CO₂/year</div></div>
+      </div>
+
+      <div class="card">
+        <div class="chat-box" id="chatEl">
+          <div class="bubble b-ai"><span class="fw5">Hello!</span> I know your footprint profile — 6.2 t/yr, transport-heavy at 41%. What would you like to understand or improve?</div>
+        </div>
+        <div class="chat-row mb10">
+          <input class="chat-inp" id="chatIn" placeholder="Ask about your footprint..." onkeydown="if(event.key==='Enter')sendMsg()">
+          <button class="btn btn-primary btn-sm" onclick="sendMsg()" aria-label="Send"><i class="ti ti-send" aria-hidden="true"></i></button>
+        </div>
+        <div class="quick-chips">
+          <button class="qc" onclick="qMsg('Why is my transport footprint so high?')">Transport explained</button>
+          <button class="qc" onclick="qMsg('How do I hit my 450 kg monthly target?')">Hit my target</button>
+          <button class="qc" onclick="qMsg('Is going vegan actually worth it?')">Vegan vs flexitarian</button>
+          <button class="qc" onclick="qMsg('Train vs flying to Paris?')">Train vs flying</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div id="page-track" class="page">
+      <div class="pg-title">Progress</div>
+      <div class="pg-sub">3 months tracked · streak active</div>
+
+      <div class="ga mb14">
+        <div class="mc"><div class="lbl">CO₂ saved total</div><div class="val green">164 kg</div><div class="sub">this year</div></div>
+        <div class="mc"><div class="lbl">Streak</div><div class="val">9 days</div><div class="sub" style="color:#d97706">personal best</div></div>
+        <div class="mc"><div class="lbl">Actions done</div><div class="val">18 / 24</div><div class="sub">this month</div></div>
+        <div class="mc"><div class="lbl">Goal progress</div><div class="val">75%</div><div class="sub">toward 450 kg</div></div>
+      </div>
+
+      <div class="g2 mb14">
+        <div class="card">
+          <div class="sec-label"><i class="ti ti-target" aria-hidden="true"></i> Monthly goal</div>
+          <div class="row between f12 muted mb8"><span>517 kg now</span><span>450 kg target</span></div>
+          <div class="pbar" style="height:10px"><div class="pfill" style="width:75%;background:var(--green)"></div></div>
+          <div class="f11 muted mt8">67 kg to go — on track</div>
+          <div class="sep"></div>
+          <div class="sec-label"><i class="ti ti-chart-bar" aria-hidden="true"></i> Weekly savings</div>
+          <div style="position:relative;height:110px"><canvas id="wkChart" role="img" aria-label="Bar chart: weekly CO2 savings 12, 9, 22, 28 kg">Week 1: 12kg, Week 2: 9kg, Week 3: 22kg, Week 4: 28kg.</canvas></div>
+        </div>
+        <div class="card">
+          <div class="sec-label"><i class="ti ti-list-check" aria-hidden="true"></i> Active actions</div>
+          <div class="action-row">
+            <div class="chk done" onclick="togAct(this)"><i class="ti ti-check" style="font-size:11px"></i></div>
+            <div style="flex:1"><div class="fw5 f12">Bus Tue & Thu</div><div class="f11 muted">9-day streak</div></div>
+            <span class="action-save">−132 kg/yr</span>
+          </div>
+          <div class="action-row">
+            <div class="chk done" onclick="togAct(this)"><i class="ti ti-check" style="font-size:11px"></i></div>
+            <div style="flex:1"><div class="fw5 f12">Meat-free Mon & Wed</div><div class="f11 muted">−88 kg saved</div></div>
+            <span class="action-save">−264 kg/yr</span>
+          </div>
+          <div class="action-row">
+            <div class="chk" onclick="togAct(this)"></div>
+            <div style="flex:1"><div class="fw5 f12">Standby devices off</div><div class="f11 muted">not started</div></div>
+            <span class="action-save">−52 kg/yr</span>
+          </div>
+          <div class="action-row">
+            <div class="chk" onclick="togAct(this)"></div>
+            <div style="flex:1"><div class="fw5 f12">2-min shorter showers</div><div class="f11 muted">not started</div></div>
+            <span class="action-save">−36 kg/yr</span>
+          </div>
+          <button class="btn btn-sm btn-block mt12" onclick="nav('nba')"><i class="ti ti-plus" aria-hidden="true"></i> Add actions</button>
+        </div>
+      </div>
+
+      <div class="sec-label"><i class="ti ti-trophy" aria-hidden="true"></i> Achievements</div>
+      <div class="g2">
+        <div class="card-sm row gap10" style="padding:12px">
+          <div style="width:38px;height:38px;background:var(--green-light);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-leaf" style="font-size:18px;color:#14532d" aria-hidden="true"></i></div>
+          <div><div class="fw5 f12">First action</div><div class="f11 muted">Completed</div><div class="mt8"><span class="pill pill-g">Earned</span></div></div>
+        </div>
+        <div class="card-sm row gap10" style="padding:12px">
+          <div style="width:38px;height:38px;background:#fef3c7;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-flame" style="font-size:18px;color:#78350f" aria-hidden="true"></i></div>
+          <div><div class="fw5 f12">9-day streak</div><div class="f11 muted">Consistent</div><div class="mt8"><span class="pill pill-a">Earned</span></div></div>
+        </div>
+        <div class="card-sm row gap10" style="padding:12px;opacity:.45">
+          <div style="width:38px;height:38px;background:var(--color-background-secondary);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-world" style="font-size:18px;color:var(--muted)" aria-hidden="true"></i></div>
+          <div><div class="fw5 f12">Planet saver</div><div class="f11 muted">336 kg to go</div><div class="mt8"><span class="pill pill-n">Locked</span></div></div>
+        </div>
+        <div class="card-sm row gap10" style="padding:12px;opacity:.45">
+          <div style="width:38px;height:38px;background:var(--color-background-secondary);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-bolt" style="font-size:18px;color:var(--muted)" aria-hidden="true"></i></div>
+          <div><div class="fw5 f12">Energy ninja</div><div class="f11 muted">Complete home actions</div><div class="mt8"><span class="pill pill-n">Locked</span></div></div>
+        </div>
+      </div>
+
+      <div style="background:var(--green-light);border-radius:var(--radius);padding:18px;text-align:center;margin-top:14px">
+        <div class="f12 green fw5 mb10">Your 164 kg saved equals</div>
+        <div style="font-size:26px;font-weight:500;color:#14532d">7.5 trees</div>
+        <div class="f12" style="color:#166534">planted and growing for one year</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav" aria-label="Mobile navigation">
+  <div class="bnav-inner">
+    <button class="bn" onclick="nav('dash')" id="bn-dash"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Home</button>
+    <button class="bn" onclick="nav('nba')" id="bn-nba"><i class="ti ti-bolt" aria-hidden="true"></i>Action</button>
+    <button class="bn" onclick="nav('sim')" id="bn-sim"><i class="ti ti-adjustments" aria-hidden="true"></i>Simulate</button>
+    <button class="bn" onclick="nav('coach')" id="bn-coach"><i class="ti ti-message-circle" aria-hidden="true"></i>Coach</button>
+    <button class="bn" onclick="nav('track')" id="bn-track"><i class="ti ti-chart-line" aria-hidden="true"></i>Progress</button>
+  </div>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const pages=['assess','dash','nba','sim','coach','track'];
+const bnMap={dash:'bn-dash',nba:'bn-nba',sim:'bn-sim',coach:'bn-coach',track:'bn-track'};
+function nav(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tn,.sn').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  document.querySelectorAll('.tn,.sn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active');
+  });
+  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('active'));
+  if(bnMap[id]) document.getElementById(bnMap[id])?.classList.add('active');
+}
+function pickChip(el){
+  el.closest('.opt-chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function togAct(el){
+  el.classList.toggle('done');
+  el.innerHTML=el.classList.contains('done')?'<i class="ti ti-check" style="font-size:11px"></i>':'';
+}
+
+const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
+const tc=isDark?'#94a3b8':'#64748b';
+const gc=isDark?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.05)';
+
+const cats=[
+  {l:'Transport',p:41,c:'#166534',kg:2542},
+  {l:'Food',p:24,c:'#16a34a',kg:1488},
+  {l:'Home',p:19,c:'#2563eb',kg:1178},
+  {l:'Shopping',p:10,c:'#d97706',kg:620},
+  {l:'Waste',p:6,c:'#94a3b8',kg:372}
+];
+const cb=document.getElementById('catBarsEl');
+if(cb) cats.forEach(c=>{
+  cb.innerHTML+=`<div style="margin-bottom:10px"><div class="row between f12" style="margin-bottom:3px"><span>${c.l}</span><span class="fw5" style="color:${c.c}">${c.p}% · ${c.kg} kg</span></div><div class="pbar"><div class="pfill" style="width:${c.p*2.2}%;background:${c.c}"></div></div></div>`;
+});
+
+new Chart(document.getElementById('donut1'),{
+  type:'doughnut',
+  data:{labels:cats.map(c=>c.l),datasets:[{data:cats.map(c=>c.p),backgroundColor:cats.map(c=>c.c),borderWidth:2,borderColor:isDark?'#0f172a':'#fff'}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false}}}
+});
+new Chart(document.getElementById('trend1'),{
+  type:'line',
+  data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'kg',data:[580,560,545,530,517,517],borderColor:'#166534',backgroundColor:'rgba(22,101,52,0.08)',tension:0.4,fill:true,pointBackgroundColor:'#166534',pointRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{color:tc,font:{size:10}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:10},callback:v=>v+'kg'},grid:{color:gc}}},plugins:{legend:{display:false}}}
+});
+new Chart(document.getElementById('wkChart'),{
+  type:'bar',
+  data:{labels:['Wk 1','Wk 2','Wk 3','Wk 4'],datasets:[{data:[12,9,22,28],backgroundColor:'#166534',borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false}},y:{ticks:{color:tc,font:{size:10},callback:v=>v+' kg'},grid:{color:gc}}},plugins:{legend:{display:false}}}
+});
+
+let simChart=null;
+const dCols=['#166534','#16a34a','#2563eb','#d97706','#94a3b8'];
+const dLbls=['Transport','Food','Home','Shopping','Waste'];
+function doSim(){
+  const tr=+document.getElementById('s-tr').value;
+  const ca=+document.getElementById('s-ca').value;
+  const mf=+document.getElementById('s-mf').value;
+  const fw=+document.getElementById('s-fw').value;
+  const el=+document.getElementById('s-el').value;
+  const fl=+document.getElementById('s-fl').value;
+  document.getElementById('v-tr').textContent=tr;
+  document.getElementById('v-ca').textContent=ca;
+  document.getElementById('v-mf').textContent=mf;
+  document.getElementById('v-fw').textContent=fw+'%';
+  document.getElementById('v-el').textContent=el+'%';
+  document.getElementById('v-fl').textContent=fl;
+  const tSv=Math.round((5-ca)*132+(tr-1)*66);
+  const fSv=Math.round(mf*132+(fw/100)*1488*0.3);
+  const hSv=Math.round((el/100)*1178);
+  const flSv=Math.round((2-fl)*200);
+  const nT=Math.max(0,2542-tSv);const nF=Math.max(0,1488-fSv);const nH=Math.max(0,1178-hSv);const nFl=Math.max(0,400-flSv);
+  const newTot=nT+nF+nH+620+372+nFl;
+  const saved=6200-newTot;
+  const pct=Math.round((saved/6200)*100);
+  const newSc=Math.min(100,Math.round(68+pct*0.6));
+  const trees=Math.max(0,Math.round(saved/21.8));
+  document.getElementById('sim-sc').textContent=newSc;
+  document.getElementById('sim-tot').textContent=(newTot/1000).toFixed(1)+' t';
+  document.getElementById('sim-delta').textContent=(saved>0?'−':'')+Math.abs(Math.round(saved))+' kg CO₂/yr';
+  document.getElementById('sim-pct').textContent=saved>0?pct+'% reduction from baseline':'Move sliders to see impact';
+  document.getElementById('sim-eq').textContent=trees;
+  document.getElementById('sim-eqlbl').textContent=trees===1?'tree planted for a year':'trees planted for a year';
+  const dd=[nT,nF,nH,620,372];
+  const leg=document.getElementById('simLeg');
+  if(leg) leg.innerHTML=dLbls.map((l,i)=>`<span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:${dCols[i]};display:inline-block"></span>${l}</span>`).join('');
+  if(simChart){simChart.data.datasets[0].data=dd;simChart.update()}
+  else simChart=new Chart(document.getElementById('simDonut'),{
+    type:'doughnut',
+    data:{labels:dLbls,datasets:[{data:dd,backgroundColor:dCols,borderWidth:2,borderColor:isDark?'#0f172a':'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}
+  });
+}
+function resetSim(){
+  ['s-tr','s-ca','s-mf','s-fw','s-el','s-fl'].forEach((id,i)=>{
+    document.getElementById(id).value=[1,5,1,10,0,2][i];
+  });
+  doSim();
+}
+doSim();
+
+const aiR={
+  transport:'Your commute is the core driver. Driving solo produces 1.8 kg CO₂ per trip — the Tube emits just 0.05 kg for the same journey. That\'s a 36× difference. Three swaps a week = 396 kg saved annually, outweighing almost every other change you could make.',
+  target:'To drop from 517 kg to 450 kg/month you need 67 kg more savings. Your #1 action (3 bus days/wk) saves 33 kg/month alone. Add 2 meat-free days = 22 kg more. That\'s 55 kg — nearly there, from two low-effort changes.',
+  vegan:'You\'re already flexitarian, which is a big win. Going fully vegan saves around 580 kg/yr more. But going from flexitarian to vegetarian saves ~390 kg. The biggest jump is actually from meat-heavy to flexitarian — which you\'ve already done. Two extra meat-free days/week gets you 45% of the full vegan benefit with far less commitment.',
+  paris:'Return flight London–Paris emits ~180 kg CO₂ per person. The Eurostar emits ~6 kg return — 30× less. And door-to-door, Eurostar is often faster than flying once you account for airports. For any European trip under ~800 km, train wins on every metric.',
+  default:'Based on your 6.2 t/yr profile, transport is your highest leverage point. Even small changes there outweigh most other actions. Want me to walk through a personalised 30-day plan?'
+};
+function getR(q){
+  q=q.toLowerCase();
+  if(q.includes('transport')||q.includes('car')||q.includes('commut')||q.includes('high')) return aiR.transport;
+  if(q.includes('target')||q.includes('450')||q.includes('goal')||q.includes('hit')) return aiR.target;
+  if(q.includes('vegan')||q.includes('worth')) return aiR.vegan;
+  if(q.includes('paris')||q.includes('train')||q.includes('fly')) return aiR.paris;
+  return aiR.default;
+}
+function sendMsg(){
+  const inp=document.getElementById('chatIn');
+  const q=inp.value.trim();if(!q)return;
+  const el=document.getElementById('chatEl');
+  el.innerHTML+=`<div class="bubble b-user">${q}</div>`;
+  inp.value='';
+  setTimeout(()=>{el.innerHTML+=`<div class="bubble b-ai">${getR(q)}</div>`;},700);
+}
+function qMsg(q){document.getElementById('chatIn').value=q;sendMsg();}
+</script>
