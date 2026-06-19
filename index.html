@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="CarbonPilot — assess, track, and reduce your carbon footprint with precision.">
+  <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <title>CarbonPilot</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<!-- SVG Sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.6C10.5 5.4 11 4 11 2c0 2 0 4-2 6-2 2-4 4-2 8"/><path d="M11 20c-2 0-4-1-4-3"/><path d="M11 20c2 0 4-1 4-3"/></symbol>
+  <symbol id="i-dashboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4 20-7z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></symbol>
+  <symbol id="i-salad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10"/><path d="M12 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9s-9 4.03-9 9a9 9 0 0 0 9 9z"/><path d="M11 21c0-3 2-5 2-11"/><path d="M11 11c0-3 1.5-5 3-5s3 2 3 5"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M13 2 9 12v9l4-3 3-3 4-3-3-3-3-3z"/></symbol>
+  <symbol id="i-shirt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6 4 4 8-8"/><path d="M21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14"/></symbol>
+  <symbol id="i-world" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-donut" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></symbol>
+  <symbol id="i-trending" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+  <symbol id="i-bar-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 18h16"/><path d="M4 6h16"/></symbol>
+</svg>
+
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Sidebar">
+    <div class="sidebar-section">Navigate</div>
+    <nav class="sidebar-nav">
+      <a href="#" data-page="assess" onclick="go('assess');return false;">
+        <svg><use href="#i-clipboard"/></svg> Assess
+      </a>
+      <a href="#" data-page="dash" class="active" onclick="go('dash');return false;">
+        <svg><use href="#i-dashboard"/></svg> Dashboard
+      </a>
+      <a href="#" data-page="nba" onclick="go('nba');return false;">
+        <svg><use href="#i-bolt"/></svg> Next Action
+      </a>
+      <a href="#" data-page="sim" onclick="go('sim');return false;">
+        <svg><use href="#i-sliders"/></svg> Simulator
+      </a>
+      <a href="#" data-page="coach" onclick="go('coach');return false;">
+        <svg><use href="#i-message"/></svg> AI Coach
+      </a>
+      <a href="#" data-page="track" onclick="go('track');return false;">
+        <svg><use href="#i-chart"/></svg> Progress
+      </a>
+    </nav>
+
+    <div class="sidebar-section" style="margin-top:var(--space-10)">Profile</div>
+    <nav class="sidebar-nav">
+      <a href="#" onclick="go('assess');return false;">
+        <svg><use href="#i-user"/></svg> My Profile
+      </a>
+      <a href="#" onclick="go('track');return false;">
+        <svg><use href="#i-trophy"/></svg> Achievements
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar">AM</div>
+        <div>
+          <div class="user-name">Alex M.</div>
+          <div class="user-meta">6.2 t CO₂/yr</div>
+        </div>
+      </div>
+      <div class="score-mini">
+        <div class="score-ring-mini">
+          <svg width="44" height="44" viewBox="0 0 44 44">
+            <circle class="track" cx="22" cy="22" r="18"/>
+            <circle class="fill" cx="22" cy="22" r="18" stroke-dasharray="113.1" stroke-dashoffset="36.2" transform="rotate(-90 22 22)"/>
+          </svg>
+          <span class="num">68</span>
+        </div>
+        <div class="score-label">Eco score<br><strong>Top 32%</strong></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="topbar" role="banner">
+    <div class="brand">
+      <img src="assets/logo.svg" class="brand-logo" alt="">
+      CarbonPilot
+    </div>
+    <nav class="topbar-nav" aria-label="Main navigation">
+      <button data-page="assess" onclick="go('assess')">Assess</button>
+      <button data-page="dash" class="active" onclick="go('dash')">Dashboard</button>
+      <button data-page="nba" onclick="go('nba')">Next Action</button>
+      <button data-page="sim" onclick="go('sim')">Simulator</button>
+      <button data-page="coach" onclick="go('coach')">Coach</button>
+      <button data-page="track" onclick="go('track')">Progress</button>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg id="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg id="theme-icon-moon" style="display:none" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="go('nba')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Top Action
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- ASSESS PAGE -->
+    <section id="page-assess" class="page" aria-label="Assessment">
+      <div class="hero-gradient">
+        <div class="page-hero reveal">
+          <h1 class="page-title">Carbon Assessment</h1>
+          <p class="page-subtitle">A quick 2-minute survey to understand your environmental impact across five key areas of daily life.</p>
+        </div>
+      </div>
+
+      <div class="stepper reveal reveal-d1">
+        <div class="stepper-step done">Transport</div>
+        <div class="stepper-step done">Diet</div>
+        <div class="stepper-step current">Energy</div>
+        <div class="stepper-step">Shopping</div>
+        <div class="stepper-step">Travel</div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="card" style="max-width:640px; margin:0 auto">
+          <div class="card-header">
+            <div class="card-title">
+              <svg><use href="#i-flame"/></svg> Home Energy
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Household size</label>
+            <select class="form-select">
+              <option>1 person</option><option selected>2 people</option><option>3–4 people</option><option>5+ people</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monthly electricity bill</label>
+            <select class="form-select">
+              <option>Under £30</option><option selected>£30–£80</option><option>£80–£150</option><option>Over £150</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Heating type</label>
+            <div class="chip-group">
+              <button class="chip active" onclick="pickChip(this)">
+                <svg><use href="#i-flame"/></svg> Gas boiler
+              </button>
+              <button class="chip" onclick="pickChip(this)">
+                <svg><use href="#i-bolt"/></svg> Heat pump
+              </button>
+              <button class="chip" onclick="pickChip(this)">
+                <svg><use href="#i-sun"/></svg> Solar
+              </button>
+              <button class="chip" onclick="pickChip(this)">Oil / other</button>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button class="btn btn-secondary" onclick="go('dash')">Back</button>
+            <button class="btn btn-primary" onclick="go('dash')">Continue</button>
+            <button class="btn btn-ghost" style="margin-left:auto" onclick="go('dash')">Skip all</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD PAGE -->
+    <section id="page-dash" class="page active" aria-label="Dashboard">
+      <div class="hero-gradient">
+        <div class="page-hero reveal">
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle">Your complete carbon footprint overview. June 2026 · Household of 2.</p>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="grid grid-4 reveal">
+          <div class="stat-card">
+            <div class="stat-label">Eco Score</div>
+            <div class="stat-value positive">68<span style="font-size:var(--text-lg);font-weight:500;color:var(--text-3);margin-left:6px">/ 100</span></div>
+            <div class="stat-delta up">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m18 15-6-6-6 6"/></svg>
+              Top 32% of users
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Annual Footprint</div>
+            <div class="stat-value">6.2 t</div>
+            <div class="stat-delta up">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m18 15-6-6-6 6"/></svg>
+              ↓ 8% from last year
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">This Month</div>
+            <div class="stat-value">517 kg</div>
+            <div class="stat-delta neutral">Target: 450 kg</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Biggest Source</div>
+            <div class="stat-value" style="font-size:var(--text-2xl)">Transport</div>
+            <div class="stat-delta down">41% of total</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="grid grid-2 reveal reveal-d1">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg><use href="#i-donut"/></svg> Breakdown
+              </div>
+            </div>
+            <div style="position:relative;height:260px">
+              <canvas id="chartDonut" aria-label="Emission breakdown"></canvas>
+            </div>
+            <div id="donutLegend" style="display:flex;flex-wrap:wrap;gap:var(--space-4);margin-top:var(--space-6);font-size:var(--text-sm);color:var(--text-3)"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg><use href="#i-trending"/></svg> Monthly Trend
+              </div>
+            </div>
+            <div style="position:relative;height:260px">
+              <canvas id="chartTrend" aria-label="Monthly trend"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="card reveal reveal-d2">
+          <div class="card-header">
+            <div class="card-title">
+              <svg><use href="#i-bar-chart"/></svg> Category Detail
+            </div>
+          </div>
+          <div id="catBars"></div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="cta-banner reveal reveal-d3">
+          <div class="cta-icon">
+            <svg width="24" height="24"><use href="#i-bolt"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">Your #1 recommended action</div>
+            <div style="font-size:var(--text-base);color:var(--text-3);margin-top:var(--space-1)">Take the bus 3 days a week — saves 396 kg CO₂/year</div>
+          </div>
+          <button class="btn btn-primary" onclick="go('nba')">View</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEXT BEST ACTION -->
+    <section id="page-nba" class="page" aria-label="Next Best Action">
+      <div class="hero-gradient">
+        <div class="page-hero reveal">
+          <h1 class="page-title">Next Best Action</h1>
+          <p class="page-subtitle">Your single highest-impact, most achievable step to reduce your carbon footprint.</p>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="highlight-card reveal reveal-d1">
+          <div class="highlight-tag">AI Pick</div>
+          <div class="highlight-icon">
+            <svg><use href="#i-bus"/></svg>
+          </div>
+          <div style="font-weight:700;font-size:var(--text-xl);color:var(--text)">Take public transport 3 days a week</div>
+          <div class="highlight-value">Save 396 kg CO₂/year</div>
+          <div style="font-size:var(--text-base);color:var(--text-3);margin-bottom:var(--space-6);max-width:560px">That's 22% of your transport emissions — your biggest lever. Small change, massive impact.</div>
+
+          <div class="grid grid-3 mb-6">
+            <div class="stat-card" style="padding:var(--space-6);background:transparent;border:none">
+              <div class="stat-label">Difficulty</div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--orange);margin-top:var(--space-3)">Low</div>
+            </div>
+            <div class="stat-card" style="padding:var(--space-6);background:transparent;border:none">
+              <div class="stat-label">Impact</div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--green);margin-top:var(--space-3)">High</div>
+            </div>
+            <div class="stat-card" style="padding:var(--space-6);background:transparent;border:none">
+              <div class="stat-label">Starts</div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text);margin-top:var(--space-3)">Day one</div>
+            </div>
+          </div>
+
+          <div style="background:var(--surface);border-radius:var(--r-xl);padding:var(--space-6);margin-bottom:var(--space-6);border:1px solid var(--border)">
+            <div style="font-weight:700;font-size:var(--text-lg);margin-bottom:var(--space-4);color:var(--accent)">Why this action?</div>
+            <div style="font-size:var(--text-base);color:var(--text-3);line-height:1.7">Your car produces 1.8 kg CO₂ per commute. The tube emits just 0.05 kg — a 36× difference. Three swaps a week delivers the highest ratio of impact to effort for your profile.</div>
+          </div>
+
+          <div class="flex gap-3" style="flex-wrap:wrap">
+            <button class="btn btn-primary btn-lg" onclick="go('track')">
+              <svg width="18" height="18"><use href="#i-check"/></svg> Start This Action
+            </button>
+            <button class="btn btn-secondary btn-lg" onclick="go('sim')">Simulate First</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:var(--space-8)">
+        <div class="section-label reveal">
+          <svg><use href="#i-list-check"/></svg> Other High-Impact Options
+        </div>
+        <div class="grid grid-2 reveal reveal-d1">
+          <div class="card card-elevated">
+            <div class="flex items-center gap-4 mb-5">
+              <div style="width:48px;height:48px;background:var(--green-light);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="22" height="22" style="color:var(--green)"><use href="#i-salad"/></svg>
+              </div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">2 meat-free days/week</div>
+            </div>
+            <div style="font-size:var(--text-2xl);font-weight:800;color:var(--green);letter-spacing:-1px">−264 kg/yr</div>
+            <div class="progress-bar mt-4"><div class="progress-fill" style="width:67%"></div></div>
+            <div class="flex justify-between mt-4">
+              <span class="pill pill-green">Low effort</span>
+              <span style="font-size:var(--text-sm);color:var(--text-3)">#2</span>
+            </div>
+          </div>
+          <div class="card card-elevated">
+            <div class="flex items-center gap-4 mb-5">
+              <div style="width:48px;height:48px;background:var(--blue-light);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="22" height="22" style="color:var(--blue)"><use href="#i-bolt"/></svg>
+              </div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">Switch to green energy tariff</div>
+            </div>
+            <div style="font-size:var(--text-2xl);font-weight:800;color:var(--blue);letter-spacing:-1px">−210 kg/yr</div>
+            <div class="progress-bar mt-4"><div class="progress-fill" style="width:53%;background:linear-gradient(90deg,var(--blue),#5B9BD5)"></div></div>
+            <div class="flex justify-between mt-4">
+              <span class="pill pill-blue">One-time</span>
+              <span style="font-size:var(--text-sm);color:var(--text-3)">#3</span>
+            </div>
+          </div>
+          <div class="card card-elevated">
+            <div class="flex items-center gap-4 mb-5">
+              <div style="width:48px;height:48px;background:var(--orange-light);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="22" height="22" style="color:var(--orange)"><use href="#i-plane"/></svg>
+              </div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">Skip one short-haul flight</div>
+            </div>
+            <div style="font-size:var(--text-2xl);font-weight:800;color:var(--orange);letter-spacing:-1px">−400 kg</div>
+            <div class="progress-bar mt-4"><div class="progress-fill" style="width:100%;background:linear-gradient(90deg,var(--orange),#FFB84D)"></div></div>
+            <div class="flex justify-between mt-4">
+              <span class="pill pill-amber">Medium effort</span>
+              <span style="font-size:var(--text-sm);color:var(--text-3)">#4</span>
+            </div>
+          </div>
+          <div class="card card-elevated">
+            <div class="flex items-center gap-4 mb-5">
+              <div style="width:48px;height:48px;background:var(--accent-light);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="22" height="22" style="color:var(--accent)"><use href="#i-shirt"/></svg>
+              </div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">Halve clothing purchases</div>
+            </div>
+            <div style="font-size:var(--text-2xl);font-weight:800;color:var(--accent);letter-spacing:-1px">−120 kg/yr</div>
+            <div class="progress-bar mt-4"><div class="progress-fill" style="width:30%"></div></div>
+            <div class="flex justify-between mt-4">
+              <span class="pill pill-green">Low effort</span>
+              <span style="font-size:var(--text-sm);color:var(--text-3)">#5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIMULATOR -->
+    <section id="page-sim" class="page" aria-label="Simulator">
+      <div class="hero-gradient">
+        <div class="page-hero reveal">
+          <h1 class="page-title">What-If Simulator</h1>
+          <p class="page-subtitle">Move the sliders. Watch your footprint change in real time. See exactly what difference your choices make.</p>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="grid grid-2">
+          <div class="card reveal">
+            <div class="card-header">
+              <div class="card-title">
+                <svg><use href="#i-sliders"/></svg> Adjust Habits
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="font-size:var(--text-sm);font-weight:700;color:var(--text-3);margin-bottom:var(--space-5);text-transform:uppercase;letter-spacing:0.06em">Transport</div>
+              <div class="slider-row">
+                <span class="slider-label">Bus/train days per week</span>
+                <input type="range" min="0" max="5" value="1" id="sim-tr" oninput="updateSim()">
+                <span class="slider-value" id="val-tr">1</span>
+              </div>
+              <div class="slider-row">
+                <span class="slider-label">Car trips per week</span>
+                <input type="range" min="0" max="7" value="5" id="sim-ca" oninput="updateSim()">
+                <span class="slider-value" id="val-ca">5</span>
+              </div>
+
+              <div class="sep"></div>
+              <div style="font-size:var(--text-sm);font-weight:700;color:var(--text-3);margin-bottom:var(--space-5);text-transform:uppercase;letter-spacing:0.06em">Food</div>
+              <div class="slider-row">
+                <span class="slider-label">Meat-free days per week</span>
+                <input type="range" min="0" max="7" value="1" id="sim-mf" oninput="updateSim()">
+                <span class="slider-value" id="val-mf">1</span>
+              </div>
+              <div class="slider-row">
+                <span class="slider-label">Food waste reduced by</span>
+                <input type="range" min="0" max="100" step="5" value="10" id="sim-fw" oninput="updateSim()">
+                <span class="slider-value" id="val-fw">10%</span>
+              </div>
+
+              <div class="sep"></div>
+              <div style="font-size:var(--text-sm);font-weight:700;color:var(--text-3);margin-bottom:var(--space-5);text-transform:uppercase;letter-spacing:0.06em">Home & Travel</div>
+              <div class="slider-row">
+                <span class="slider-label">Electricity use reduced</span>
+                <input type="range" min="0" max="60" step="5" value="0" id="sim-el" oninput="updateSim()">
+                <span class="slider-value" id="val-el">0%</span>
+              </div>
+              <div class="slider-row">
+                <span class="slider-label">Short-haul flights per year</span>
+                <input type="range" min="0" max="6" value="2" id="sim-fl" oninput="updateSim()">
+                <span class="slider-value" id="val-fl">2</span>
+              </div>
+
+              <div class="sep"></div>
+              <button class="btn btn-secondary btn-block" onclick="resetSim()">
+                <svg width="16" height="16"><use href="#i-refresh"/></svg> Reset to Baseline
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div class="card mb-5 reveal reveal-d1" style="border:2px solid var(--accent)">
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:var(--space-5);letter-spacing:0.1em;text-transform:uppercase;font-weight:700">Projected Outcome</div>
+              <div class="grid grid-2 mb-5">
+                <div class="stat-card" style="padding:var(--space-5);background:transparent;border:none">
+                  <div class="stat-label">New Score</div>
+                  <div class="stat-value positive" id="sim-score">68</div>
+                </div>
+                <div class="stat-card" style="padding:var(--space-5);background:transparent;border:none">
+                  <div class="stat-label">Annual Total</div>
+                  <div class="stat-value" id="sim-total">6.2 t</div>
+                </div>
+              </div>
+              <div style="background:var(--accent-light);border-radius:var(--r-xl);padding:var(--space-6);border:1px solid var(--accent-glow)">
+                <div style="font-size:11px;color:var(--accent);margin-bottom:var(--space-2);font-weight:700;text-transform:uppercase;letter-spacing:0.05em">Reduction vs Now</div>
+                <div style="font-size:var(--text-2xl);font-weight:800;color:var(--accent);letter-spacing:-1px" id="sim-delta">0 kg</div>
+                <div style="font-size:var(--text-base);color:var(--text-3);margin-top:var(--space-1)" id="sim-pct">Move sliders to see impact</div>
+              </div>
+            </div>
+
+            <div class="tree-banner mb-5 reveal reveal-d2">
+              <div style="font-size:11px;color:var(--accent);margin-bottom:var(--space-4);font-weight:700;letter-spacing:0.1em;text-transform:uppercase">Real-World Equivalent</div>
+              <div style="font-size:var(--text-4xl);font-weight:800;color:var(--accent);letter-spacing:-2px" id="sim-trees">0</div>
+              <div style="font-size:var(--text-base);color:var(--text-3)" id="sim-trees-label">trees planted for one year</div>
+            </div>
+
+            <div class="card reveal reveal-d3">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg><use href="#i-donut"/></svg> Updated Mix
+                </div>
+              </div>
+              <div style="position:relative;height:190px">
+                <canvas id="chartSimDonut" aria-label="Updated mix"></canvas>
+              </div>
+              <div id="simLegend" style="display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-5);font-size:var(--text-xs);color:var(--text-3)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI COACH -->
+    <section id="page-coach" class="page" aria-label="AI Coach">
+      <div class="hero-gradient">
+        <div class="page-hero reveal">
+          <h1 class="page-title">AI Coach</h1>
+          <p class="page-subtitle">Your personal carbon advisor. Ask anything about your footprint, habits, or how to improve.</p>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="grid grid-2 mb-6 reveal">
+          <div class="stat-card">
+            <div class="stat-label">Profile Loaded</div>
+            <div style="font-weight:700;font-size:var(--text-lg);margin-top:var(--space-3);color:var(--text)">2 people · car commuter · flexitarian</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Footprint</div>
+            <div style="font-weight:700;font-size:var(--text-lg);color:var(--green);margin-top:var(--space-3)">6.2 t CO₂/year</div>
+          </div>
+        </div>
+
+        <div class="card reveal reveal-d1">
+          <div class="chat-box" id="chatBox">
+            <div class="chat-bubble ai">
+              <span style="font-weight:700">Hello!</span> I know your footprint profile — 6.2 t/yr, transport-heavy at 41%. What would you like to understand or improve?
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask about your footprint..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button class="btn btn-primary" onclick="sendChat()" aria-label="Send">
+              <svg width="18" height="18"><use href="#i-send"/></svg>
+            </button>
+          </div>
+          <div class="quick-chips">
+            <button class="quick-chip" onclick="quickChat('Why is my transport footprint so high?')">Transport explained</button>
+            <button class="quick-chip" onclick="quickChat('How do I hit my 450 kg monthly target?')">Hit my target</button>
+            <button class="quick-chip" onclick="quickChat('Is going vegan actually worth it?')">Vegan vs flexitarian</button>
+            <button class="quick-chip" onclick="quickChat('Train vs flying to Paris?')">Train vs flying</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section id="page-track" class="page" aria-label="Progress">
+      <div class="hero-gradient">
+        <div class="page-hero reveal">
+          <h1 class="page-title">Progress</h1>
+          <p class="page-subtitle">3 months tracked. Your streak is active. Keep going.</p>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="grid grid-4 reveal">
+          <div class="stat-card">
+            <div class="stat-label">CO₂ Saved Total</div>
+            <div class="stat-value positive">164 kg</div>
+            <div class="stat-delta neutral">this year</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Streak</div>
+            <div class="stat-value">9 days</div>
+            <div class="stat-delta up">Personal best</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Actions Done</div>
+            <div class="stat-value">18 / 24</div>
+            <div class="stat-delta neutral">this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Goal Progress</div>
+            <div class="stat-value">75%</div>
+            <div class="stat-delta neutral">toward 450 kg</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:0">
+        <div class="grid grid-2 reveal reveal-d1">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg><use href="#i-target"/></svg> Monthly Goal
+              </div>
+            </div>
+            <div class="flex justify-between" style="font-size:var(--text-base);color:var(--text-3);margin-bottom:var(--space-3)">
+              <span>517 kg now</span><span>450 kg target</span>
+            </div>
+            <div class="progress-bar" style="height:10px">
+              <div class="progress-fill" style="width:75%"></div>
+            </div>
+            <div style="font-size:var(--text-sm);color:var(--text-3);margin-top:var(--space-4)">67 kg to go — on track</div>
+            <div class="sep"></div>
+            <div class="card-header" style="margin-bottom:var(--space-5)">
+              <div class="card-title">
+                <svg><use href="#i-bar-chart"/></svg> Weekly Savings
+              </div>
+            </div>
+            <div style="position:relative;height:140px">
+              <canvas id="chartWeekly" aria-label="Weekly savings"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg><use href="#i-list-check"/></svg> Active Actions
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-check done" onclick="toggleAction(this)">
+                <svg><use href="#i-check"/></svg>
+              </div>
+              <div class="action-content">
+                <div class="action-title">Bus Tue & Thu</div>
+                <div class="action-meta">9-day streak</div>
+              </div>
+              <span class="action-badge">−132 kg/yr</span>
+            </div>
+            <div class="action-item">
+              <div class="action-check done" onclick="toggleAction(this)">
+                <svg><use href="#i-check"/></svg>
+              </div>
+              <div class="action-content">
+                <div class="action-title">Meat-free Mon & Wed</div>
+                <div class="action-meta">−88 kg saved</div>
+              </div>
+              <span class="action-badge">−264 kg/yr</span>
+            </div>
+            <div class="action-item">
+              <div class="action-check" onclick="toggleAction(this)"></div>
+              <div class="action-content">
+                <div class="action-title">Standby devices off</div>
+                <div class="action-meta">Not started</div>
+              </div>
+              <span class="action-badge">−52 kg/yr</span>
+            </div>
+            <div class="action-item">
+              <div class="action-check" onclick="toggleAction(this)"></div>
+              <div class="action-content">
+                <div class="action-title">2-min shorter showers</div>
+                <div class="action-meta">Not started</div>
+              </div>
+              <span class="action-badge">−36 kg/yr</span>
+            </div>
+            <button class="btn btn-secondary btn-block mt-5" onclick="go('nba')">
+              <svg width="16" height="16"><use href="#i-plus"/></svg> Add Actions
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:var(--space-8)">
+        <div class="section-label reveal">
+          <svg><use href="#i-trophy"/></svg> Achievements
+        </div>
+        <div class="grid grid-2 reveal reveal-d1">
+          <div class="achievement-card">
+            <div class="achievement-icon earned">
+              <svg><use href="#i-leaf"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">First Action</div>
+              <div style="font-size:var(--text-sm);color:var(--text-3)">Completed</div>
+              <div class="mt-4"><span class="pill pill-green">Earned</span></div>
+            </div>
+          </div>
+          <div class="achievement-card">
+            <div class="achievement-icon earned">
+              <svg><use href="#i-flame"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">9-Day Streak</div>
+              <div style="font-size:var(--text-sm);color:var(--text-3)">Consistent</div>
+              <div class="mt-4"><span class="pill pill-amber">Earned</span></div>
+            </div>
+          </div>
+          <div class="achievement-card locked">
+            <div class="achievement-icon locked">
+              <svg><use href="#i-world"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">Planet Saver</div>
+              <div style="font-size:var(--text-sm);color:var(--text-3)">336 kg to go</div>
+              <div class="mt-4"><span class="pill pill-neutral">Locked</span></div>
+            </div>
+          </div>
+          <div class="achievement-card locked">
+            <div class="achievement-icon locked">
+              <svg><use href="#i-bolt"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:var(--text-lg);color:var(--text)">Energy Ninja</div>
+              <div style="font-size:var(--text-sm);color:var(--text-3)">Complete home actions</div>
+              <div class="mt-4"><span class="pill pill-neutral">Locked</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:var(--space-8)">
+        <div class="tree-banner reveal">
+          <div style="font-size:var(--text-lg);color:var(--accent);font-weight:700;margin-bottom:var(--space-4)">Your 164 kg saved equals</div>
+          <div style="font-size:var(--text-4xl);font-weight:800;color:var(--accent);letter-spacing:-2px">7.5 trees</div>
+          <div style="font-size:var(--text-base);color:var(--text-3)">planted and growing for one year</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav" aria-label="Mobile">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-item" data-page="dash" onclick="go('dash')">
+      <svg><use href="#i-dashboard"/></svg>Home
+    </button>
+    <button class="mobile-nav-item" data-page="nba" onclick="go('nba')">
+      <svg><use href="#i-bolt"/></svg>Action
+    </button>
+    <button class="mobile-nav-item" data-page="sim" onclick="go('sim')">
+      <svg><use href="#i-sliders"/></svg>Simulate
+    </button>
+    <button class="mobile-nav-item" data-page="coach" onclick="go('coach')">
+      <svg><use href="#i-message"/></svg>Coach
+    </button>
+    <button class="mobile-nav-item" data-page="track" onclick="go('track')">
+      <svg><use href="#i-chart"/></svg>Progress
+    </button>
+  </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
